@@ -9,10 +9,11 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 )
 
 func lookupBookByISBN(isbn string) BookResults {
-	res, err := http.Get("https://openlibrary.org/api/books?bibkeys=ISBN:9780765312815&format=json&jscmd=data")
+	res, err := http.Get(fmt.Sprintf("https://openlibrary.org/api/books?bibkeys=ISBN:%s&format=json&jscmd=data", strings.Replace(isbn, "\n", "", -1)))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -20,13 +21,14 @@ func lookupBookByISBN(isbn string) BookResults {
 	defer res.Body.Close()
 	body, err := ioutil.ReadAll(res.Body)
 
-	// parse arbitrary JSON
 	var results BookResults
 	err = json.Unmarshal(body, &results)
 
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	fmt.Println(results)
 
 	return results
 }
@@ -42,6 +44,5 @@ func main() {
 			log.Fatal(err)
 		}
 		lookupBookByISBN(line)
-		fmt.Println(line)
 	}
 }
