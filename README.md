@@ -13,7 +13,9 @@ Noisebridge has "hella" books but no information about what we have. I'm solving
 ## Can I help?
 
 Yes please!!! At time of writing the TODO list is as follows:
-    * Record subject information similar to authorships
-    * Deal with duplicate books / authors / subjects gracefully.
-    * Better logging, not to STDOUT
-    * Tests?? Would at least like to write idiomatic Golang tests
+
+  * Record subject information similar to authorships
+  * Deal with duplicate books / authors / subjects gracefully.
+  * Read the `DATABASE_URL` environment variable instead of compiling in the DB information
+  * Better logging, not to stdout
+  * Tests?? Would at least like to write idiomatic Golang tests
