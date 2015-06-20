@@ -13,7 +13,7 @@ import (
 )
 
 func lookupBookByISBN(isbn string) BookResults {
-	res, err := http.Get(fmt.Sprintf("https://openlibrary.org/api/books?bibkeys=ISBN:%s&format=json&jscmd=data", strings.Replace(isbn, "\n", "", -1)))
+	res, err := http.Get(fmt.Sprintf("https://openlibrary.org/api/books?bibkeys=ISBN:%s&format=json&jscmd=data", isbn))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -28,9 +28,18 @@ func lookupBookByISBN(isbn string) BookResults {
 		log.Fatal(err)
 	}
 
-	fmt.Println(results)
-
 	return results
+}
+
+func lookupAndRecordBook(isbn string) {
+	searchResults := lookupBookByISBN(isbn)
+	if len(searchResults) > 0 {
+		for k, v := range searchResults {
+			recordBook(k, v)
+		}
+	} else {
+		fmt.Printf("Nothing found for %s\n", isbn)
+	}
 }
 
 func main() {
@@ -43,6 +52,6 @@ func main() {
 			}
 			log.Fatal(err)
 		}
-		lookupBookByISBN(line)
+		lookupAndRecordBook(strings.Replace(line, "\n", "", -1))
 	}
 }
